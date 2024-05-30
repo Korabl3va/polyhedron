@@ -95,18 +95,26 @@ class TestVoid(unittest.TestCase):
                    R3(5.0, 10.0, 0.0), R3(5.0, 5.0, 0.0)])
         self.assertEqual(f.is_less(), True)
 
-    # Грань невидима
+    # Грань видима целиком
     def test_visible01(self):
         f = Facet([R3(1.0, 1.0, 3.0), R3(6.0, 1.0, 3.0),
                    R3(6.0, 6.0, 3.0), R3(1.0, 6.0, 3.0)])
-        f_over = f = Facet([R3(0.0, 0.0, 0.0), R3(5.0, 0.0, 0.0),
-                            R3(5.0, 5.0, 0.0), R3(0.0, 5.0, 0.0)])
+        f_over = Facet([R3(0.0, 0.0, 0.0), R3(5.0, 0.0, 0.0),
+                        R3(5.0, 5.0, 0.0), R3(0.0, 5.0, 0.0)])
         self.assertEqual(f.facet_is_visible([f, f_over]), True)
 
-    # Грань невидима
+    # Грань не видима целиком
     def test_visible02(self):
         f_over = Facet([R3(1.0, 1.0, 3.0), R3(6.0, 1.0, 3.0),
                         R3(6.0, 6.0, 3.0), R3(1.0, 6.0, 3.0)])
-        f = f = Facet([R3(0.0, 0.0, 0.0), R3(5.0, 0.0, 0.0),
-                       R3(5.0, 5.0, 0.0), R3(0.0, 5.0, 0.0)])
+        f = Facet([R3(0.0, 0.0, 0.0), R3(5.0, 0.0, 0.0),
+                   R3(5.0, 5.0, 0.0), R3(0.0, 5.0, 0.0)])
+        self.assertEqual(f.facet_is_visible([f, f_over]), False)
+
+    # Грань не видима целиком(т.к. вертикальна)
+    def test_visible03(self):
+        f_over = Facet([R3(1.0, 0.0, 0.0), R3(-1.0, 0.0, 0.0),
+                        R3(1.0, 0.0, 2.0), R3(-1.0, 0.0, 2.0)])
+        f = Facet([R3(1.0, 1.0, 3.0), R3(6.0, 1.0, 3.0),
+                   R3(1.0, 1.0, 0.0), R3(6.0, 1.0, 0.0)])
         self.assertEqual(f.facet_is_visible([f, f_over]), False)
