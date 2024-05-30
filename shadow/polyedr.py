@@ -202,7 +202,6 @@ class Polyedr:
                         self.edges.append(Edge(vertexes[n - 1], vertexes[n]))
                     # задание самой грани
                     self.facets.append(Facet(vertexes))
-                    print(Facet(vertexes).is_vertical())
                     self.original_facets.append(Facet(original_vertexes))
 
     # Метод изображения полиэдра
@@ -219,7 +218,6 @@ class Polyedr:
         for i in range(self.nf):
             f = self.original_facets[i]
             facet = self.facets[i]
-            print(facet.facet_is_visible(self.facets), facet.is_vertical())
             if facet.facet_is_visible(self.facets) and f.is_outside()\
                     and f.is_less():
                 figure = convex.Void()
