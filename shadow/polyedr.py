@@ -94,6 +94,8 @@ class Edge:
 
 
 class Facet:
+    EPS = 10**(-5)
+
     """ Грань полиэдра """
     # Параметры конструктора: список вершин
 
@@ -102,7 +104,7 @@ class Facet:
 
     # «Вертикальна» ли грань?
     def is_vertical(self):
-        return self.h_normal().dot(Polyedr.V) == 0.0
+        return -Facet.EPS < self.h_normal().dot(Polyedr.V) < Facet.EPS
 
     # Нормаль к «горизонтальному» полупространству
     def h_normal(self):
@@ -142,6 +144,8 @@ class Facet:
 
     # Проверка, является ли гранью с полностью видимыми рёбрами
     def facet_is_visible(self, facets):
+        if self.is_vertical():
+            return False
         for n in range(len(self.vertexes)):
             edge = Edge(self.vertexes[n-1], self.vertexes[n])
             for f in facets:
@@ -185,7 +189,6 @@ class Polyedr:
                     self.vertexes.append(R3(x, y, z).rz(
                         alpha).ry(beta).rz(gamma) * c)
                 else:
-                    f = convex.Void()
                     # вспомогательный массив
                     buf = line.split()
                     # количество вершин очередной грани
@@ -199,6 +202,7 @@ class Polyedr:
                         self.edges.append(Edge(vertexes[n - 1], vertexes[n]))
                     # задание самой грани
                     self.facets.append(Facet(vertexes))
+                    print(Facet(vertexes).is_vertical())
                     self.original_facets.append(Facet(original_vertexes))
 
     # Метод изображения полиэдра
@@ -215,6 +219,7 @@ class Polyedr:
         for i in range(self.nf):
             f = self.original_facets[i]
             facet = self.facets[i]
+            print(facet.facet_is_visible(self.facets), facet.is_vertical())
             if facet.facet_is_visible(self.facets) and f.is_outside()\
                     and f.is_less():
                 figure = convex.Void()
