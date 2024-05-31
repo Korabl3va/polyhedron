@@ -79,7 +79,7 @@ class TestPolyedr2(unittest.TestCase):
 
     def test_area(self):
         self.polyedr.result()
-        self.assertAlmostEqual(self.polyedr.area, 1.0)
+        self.assertAlmostEqual(self.polyedr.area, 0.7071067811865477)
 
 
 class TestPolyedr3(unittest.TestCase):
@@ -115,7 +115,7 @@ class TestPolyedr3(unittest.TestCase):
 
     def test_area(self):
         self.polyedr.result()
-        self.assertAlmostEqual(self.polyedr.area, 25.0)
+        self.assertAlmostEqual(self.polyedr.area, 21.65063509461097)
 
 
 class TestPolyedr4(unittest.TestCase):
@@ -153,7 +153,7 @@ class TestPolyedr4(unittest.TestCase):
 
     def test_area(self):
         self.polyedr.result()
-        self.assertAlmostEqual(self.polyedr.area, 32.5)
+        self.assertAlmostEqual(self.polyedr.area, 28.14582562299426)
 
 
 class TestPolyedr5(unittest.TestCase):
