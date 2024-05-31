@@ -168,6 +168,7 @@ class Polyedr:
         self.original_vertexes, self.original_facets = [], []
         self.nf = 0
         self.area = 0.0
+        self.c = 0
 
         # список строк файла
         with open(file) as f:
@@ -176,7 +177,7 @@ class Polyedr:
                     # обрабатываем первую строку; buf - вспомогательный массив
                     buf = line.split()
                     # коэффициент гомотетии
-                    c = float(buf.pop(0))
+                    self.c = float(buf.pop(0))
                     # углы Эйлера, определяющие вращение
                     alpha, beta, gamma = (float(x) * pi / 180.0 for x in buf)
                 elif i == 1:
@@ -187,7 +188,7 @@ class Polyedr:
                     x, y, z = (float(x) for x in line.split())
                     self.original_vertexes.append(R3(x, y, z))
                     self.vertexes.append(R3(x, y, z).rz(
-                        alpha).ry(beta).rz(gamma) * c)
+                        alpha).ry(beta).rz(gamma) * self.c)
                 else:
                     # вспомогательный массив
                     buf = line.split()
@@ -221,6 +222,7 @@ class Polyedr:
             if facet.facet_is_visible(self.facets) and f.is_outside()\
                     and f.is_less():
                 figure = convex.Void()
-                for vertex in f.vertexes:
-                    figure = figure.add(R2Point(vertex.x, vertex.y))
+                for vertex in facet.vertexes:
+                    figure = figure.add(R2Point(vertex.x / self.c,
+                                                vertex.y / self.c))
                 self.area += figure.area()
